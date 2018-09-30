@@ -1,0 +1,73 @@
+<mat-toolbar>
+    <span>{{service.form.controls['$key'].value?"Edit Report":"New Report"}}</span>
+    <span class="fill-remaining-space"></span>
+    <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1">
+        <mat-icon>clear</mat-icon></button>
+</mat-toolbar>
+
+<form [formGroup] = "service.form" class="normal-form" (submit)="onSubmit()">
+  <mat-grid-list cols="2" rowHeight="300px">
+    <mat-grid-tile>
+      <div class="controles-container">
+          <input type="hidden" formControlName="$key">
+          <mat-form-field>
+              <input formControlName="pReportNo" matInput placeholder="Report No. *">
+              <mat-error>This field is mandatory</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+              <input formControlName="containerNo" matInput placeholder="Container No">
+          </mat-form-field>
+          <mat-form-field>
+              <input formControlName="receivers" matInput placeholder="Receivers *">
+              <mat-error>This field is mandatory</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+              <input formControlName="arrivalDate" matInput [matDatepicker]="pickerd" placeholder="Date of Arrival">
+              <mat-datepicker-toggle matSuffix [for]="pickerd"></mat-datepicker-toggle>
+              <mat-datepicker #pickerd></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-select formControlName="inspectionType" placeholder="Type of Inspection">
+                    <mat-option>None</mat-option>
+                      <ng-container *ngFor="let inspectionType of inspectionType">
+                          <mat-option value="{{inspectionType.id}}">{{inspectionType.value}}</mat-option>
+                      </ng-container>
+                  </mat-select>
+                </mat-form-field>      
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div class="controles-container">
+          <input type="hidden" formControlName="$key">
+            <mat-form-field>
+                <input formControlName="requestor" matInput placeholder="Requestor *">
+                <mat-error>This field is mandatory</mat-error>
+                <mat-error *ngIf="service.form.controls['requestor'].error?.required">This field is mandatory</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <input formControlName="sealNo" matInput placeholder="Seal No.">
+            </mat-form-field>
+            <mat-form-field>
+                <input formControlName="placeOfInspection" matInput placeholder="Place of Inspection">
+            </mat-form-field>
+            <mat-form-field>
+              <input formControlName="inspectionDate" matInput [matDatepicker]="picker" placeholder="Date of Inspection">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-select formControlName="carrier" matInput placeholder="Carrier">
+                    <mat-option>None</mat-option>
+                    <ng-container *ngFor="let carrier of carrier">
+                        <mat-option value="{{carrier.id}}">{{carrier.value}}</mat-option>
+                    </ng-container>
+                </mat-select>
+            </mat-form-field>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <div class="button-row">
+      <button mat-raised-button color="primary" type="submit" [disabled]="service.form.invalid">Submit</button>
+      <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+  </div>
+</form>
